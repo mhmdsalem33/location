@@ -154,7 +154,6 @@ class HomeFragment : Fragment() , OnMapReadyCallback {
 
     private fun getLocation(googleMap : GoogleMap){
 
-
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -180,7 +179,6 @@ class HomeFragment : Fragment() , OnMapReadyCallback {
             .addOnSuccessListener { location: Location? ->
                 if (location != null) {
                     // Handle the retrieved location here
-
                     checkInsidePolygon(longitude = location.longitude , latitude = location.latitude)
 
                 } else {
@@ -233,8 +231,8 @@ class HomeFragment : Fragment() , OnMapReadyCallback {
         }
         locationManager.requestLocationUpdates(
             LocationManager.GPS_PROVIDER,
-            5000,
-            10f,
+            500,
+            0.25f,
             locationListener
         )
     }
@@ -250,7 +248,8 @@ class HomeFragment : Fragment() , OnMapReadyCallback {
     private fun checkInsidePolygon(  latitude : Double ,longitude: Double ){
 
 
-//        marker?.remove()
+
+        marker?.remove()
 
         val latLng = LatLng(latitude, longitude)
         mMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng , 18f))
@@ -259,20 +258,14 @@ class HomeFragment : Fragment() , OnMapReadyCallback {
 
         val currentLatLng = LatLng(latitude, longitude)
 
-
-
-
-
-
-
         if (PolyUtil.containsLocation(currentLatLng, polygon.points, true)) {
             Toast.makeText(requireContext(), "inside place ", Toast.LENGTH_SHORT).show()
-           marker =  mMap?.addMarker(MarkerOptions().position(latLng).title("el hoda wel nor").snippet("Borio coffe").icon(
+         marker =  mMap?.addMarker(MarkerOptions().position(latLng).title("el hoda wel nor").snippet("Borio coffe").icon(
                 BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)))
 
         } else {
             Toast.makeText(requireContext(), "outside place ", Toast.LENGTH_SHORT).show()
-            marker =   mMap?.addMarker(MarkerOptions().position(latLng).title("el hoda wel nor").snippet("Borio coffe").icon(
+            marker =  mMap?.addMarker(MarkerOptions().position(latLng).title("el hoda wel nor").snippet("Borio coffe").icon(
                 BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)))
         }
     }
